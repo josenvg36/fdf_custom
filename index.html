@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Isometric Projection</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <canvas id="isometricCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('isometricCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Constants
+        const GRID_SIZE = 20;
+        const CELL_SIZE = 40;
+        const ELEVATION_SCALE = 8;
+        const LINE_COLOR = '#00ff00';
+        const GLOW_COLOR = 'rgba(0, 255, 0, 0.2)';
+
+        function gaussianRandom(mean = 0, stdev = 1) {
+            let u = 1 - Math.random();
+            let v = Math.random();
+            let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+            return z * stdev + mean;
+        }
+
+        function generateLandscape() {
+            let landscape = [];
+            for (let y = 0; y < GRID_SIZE; y++) {
+                let row = [];
+                for (let x = 0; x < GRID_SIZE; x++) {
+                    let height = gaussianRandom(0, 1);
+                    row.push(height);
+                }
+                landscape.push(row);
+            }
+            return landscape;
+        }
+
+        function toIsometric(x, y, z) {
+            let isoX = (x - y) * Math.cos(Math.PI / 6);
+            let isoY = (x + y) * Math.sin(Math.PI / 6) - z;
+            return { x: isoX, y: isoY };
+        }
+
+        function drawLine(start, end) {
+            ctx.beginPath();
+            ctx.moveTo(start.x, start.y);
+            ctx.lineTo(end.x, end.y);
+            ctx.stroke();
+        }
+
+        function drawLandscape(landscape) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 4);
+
+            ctx.strokeStyle = LINE_COLOR;
+            ctx.lineWidth = 1.5;
+            ctx.shadowColor = GLOW_COLOR;
+            ctx.shadowBlur = 10;
+
+            let points = [];
+
+            // Calculate all points
+            for (let y = 0; y < GRID_SIZE; y++) {
+                for (let x = 0; x < GRID_SIZE; x++) {
+                    let height = landscape[y][x] * ELEVATION_SCALE;
+                    let pos = toIsometric(x * CELL_SIZE, y * CELL_SIZE, height);
+                    points.push({ x: pos.x, y: pos.y, z: height });
+                }
+            }
+
+            // Draw connections
+            for (let i = 0; i < points.length; i++) {
+                let point = points[i];
+                
+                // Connect to right neighbor
+                if ((i + 1) % GRID_SIZE !== 0) {
+                    drawLine(point, points[i + 1]);
+                }
+                
+                // Connect to bottom neighbor
+                if (i < points.length - GRID_SIZE) {
+                    drawLine(point, points[i + GRID_SIZE]);
+                }
+                
+                // Draw vertical line
+                drawLine(point, { x: point.x, y: point.y + point.z });
+            }
+
+            ctx.restore();
+        }
+
+        function main() {
+            let landscape = generateLandscape();
+            drawLandscape(landscape);
+        }
+
+        main();
+    </script>
+</body>
+</html>
