@@ -6,7 +6,7 @@
 /*   By: jnajul <jnajul@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:03:22 by jnajul            #+#    #+#             */
-/*   Updated: 2024/06/27 16:48:16 by jnajul           ###   ########.fr       */
+/*   Updated: 2024/06/27 17:13:21 by jnajul           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 # include <math.h>
 # include <stdio.h>
 
-#define WINDOW_WIDTH 1920
-#define WINDOW_HEIGHT 1080
-#define ELEVATION_SCALE 8
-#define ZOOM_FACTOR 1.1
+# define WINDOW_WIDTH 1920
+# define WINDOW_HEIGHT 1080
+# define ELEVATION_SCALE 8
+# define ZOOM_FACTOR 1.1
 
 typedef struct s_data
 {
