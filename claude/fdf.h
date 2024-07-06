@@ -6,7 +6,7 @@
 /*   By: jnajul <jnajul@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:03:22 by jnajul            #+#    #+#             */
-/*   Updated: 2024/06/27 17:13:21 by jnajul           ###   ########.fr       */
+/*   Updated: 2024/07/06 21:16:46 by jnajul           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <stdlib.h>
 # include <math.h>
 # include <stdio.h>
+# include <stddef.h>
+# include <fcntl.h>
+# include <unistd.h>
 
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
@@ -54,6 +57,7 @@ void    draw_isometric_grid(t_data *data);
 void    my_mlx_pp(t_data *data, int x, int y, int color);
 void    draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
 void    parse_map_file(const char *filename, t_data *data);
-void    free_map(t_data *data);
+void    free_data(t_data *data);
+// char	*get_next_line(int fd);
 
 #endif

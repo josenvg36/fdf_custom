@@ -6,7 +6,7 @@
 /*   By: jnajul <jnajul@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 15:44:35 by jnajul            #+#    #+#             */
-/*   Updated: 2024/07/06 18:20:13 by jnajul           ###   ########.fr       */
+/*   Updated: 2024/07/06 19:23:19 by jnajul           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_map
 {
 	int	height;
 	int	width;
+	int	**elevations;
 }	t_map;
 
 
@@ -36,7 +37,7 @@ typedef struct s_data
 	void	*mlx;
 	void	*win;
 	void	*img;
-	char	**addr;
+	char	*addr;
 	int		bpp;
 	int		endian;
 	int		line_len;

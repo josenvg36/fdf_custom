@@ -3,8 +3,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 MLX_DIR = ../minilibx-linux
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
-SRCS = fdf.c \
-    	../get_next_line/get_next_line.c 
+SRCS = fdf.c ../get_next_line/get_next_line.c 
 OBJS = $(SRCS:.c=.o)
 LIBFT = ../libft/libft.a
 INCLUDES = -I get_next_line -I libft -I $(MLX_DIR) -I .

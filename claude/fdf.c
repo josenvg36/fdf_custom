@@ -6,7 +6,7 @@
 /*   By: jnajul <jnajul@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:00:29 by jnajul            #+#    #+#             */
-/*   Updated: 2024/06/27 16:48:34 by jnajul           ###   ########.fr       */
+/*   Updated: 2024/07/06 21:16:51 by jnajul           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 int key_press(int keycode, t_data *data)
 {
     if (keycode == 65307) // Escape key
-        exit(0);
+	{
+		free_data(data);
+		exit (0);
+	}
     else if (keycode == 65361) // Left arrow
         data->offset_x -= 10;
     else if (keycode == 65363) // Right arrow
@@ -121,11 +124,40 @@ void draw_isometric_grid(t_data *data)
     }
 }
 
-void free_map(t_data *data)
+void free_data(t_data *data)
 {
-    for (int i = 0; i < data->height; i++)
-        free(data->elevations[i]);
-    free(data->elevations);
+    if (data->img)
+    {
+        mlx_destroy_image(data->mlx, data->img);
+        data->img = NULL;
+    }
+
+    if (data->win)
+    {
+        mlx_destroy_window(data->mlx, data->win);
+        data->win = NULL;
+    }
+
+    if (data->mlx)
+    {
+        mlx_destroy_display(data->mlx);
+        free(data->mlx);
+        data->mlx = NULL;
+    }
+
+    if (data->elevations)
+    {
+        for (int i = 0; i < data->height; i++)
+        {
+            if (data->elevations[i])
+            {
+                free(data->elevations[i]);
+                data->elevations[i] = NULL;
+            }
+        }
+        free(data->elevations);
+        data->elevations = NULL;
+    }
 }
 
 int **allocate_2d_array(int width, int height)
@@ -224,7 +256,11 @@ int main(int argc, char **argv)
     mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
     mlx_loop(data.mlx);
 
-    free_map(&data);
+	mlx_destroy_image(data.mlx, data.img);
+	mlx_destroy_window(data.mlx, data.win);
+	mlx_destroy_display(data.mlx);
+	// free(data.mlx);
+    free_data(&data);
 
     return (0);
 }
