@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnajul <jnajul@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jose <jose@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:03:22 by jnajul            #+#    #+#             */
-/*   Updated: 2024/07/06 21:16:46 by jnajul           ###   ########.fr       */
+/*   Updated: 2024/07/07 17:29:28 by jose             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
-# define ELEVATION_SCALE 8
+# define ELEVATION_SCALE 2.5
 # define ZOOM_FACTOR 1.1
 
 typedef struct s_data
@@ -42,9 +42,12 @@ typedef struct s_data
     int     offset_y;
     double  zoom;
     int     **elevations;
+    int     **colors;
     int     width;
     int     height;
+    double  base_elevation;
 }   t_data;
+
 
 typedef struct s_point
 {
@@ -52,10 +55,16 @@ typedef struct s_point
     int y;
 } t_point;
 
+typedef struct s_line
+{
+    t_point p0;
+    t_point p1;
+}   t_line;
+
 // Function prototypes
 void    draw_isometric_grid(t_data *data);
 void    my_mlx_pp(t_data *data, int x, int y, int color);
-void    draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
+void    draw_line(t_data *data, t_line *line, int color);
 void    parse_map_file(const char *filename, t_data *data);
 void    free_data(t_data *data);
 // char	*get_next_line(int fd);
